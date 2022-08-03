@@ -10,7 +10,7 @@ def diff(l):
 def showUnusualActivities(unusual, vid, noOfRows, noOfCols, n):
    
     unusualFrames = unusual.keys()
-    unusualFrames.sort()
+    sorted(unusualFrames)
     print(unusualFrames)
     cap = cv2.VideoCapture(vid)
     ret, frame = cap.read()
@@ -48,6 +48,10 @@ def showUnusualActivities(unusual, vid, noOfRows, noOfCols, n):
                 y1 = blockNum[0] * colLength
                 x2 = (blockNum[1]+1) * rowLength
                 y2 = (blockNum[0]+1) * colLength
+                x1 = int(x1)
+                y1 = int(y1)
+                x2 = int(x2)
+                y2 = int(y2)
                 cv2.rectangle(uFrame,(x1,y1),(x2,y2),(0,0,255),1)
             print("Unusual frame number ",str(count))
         cv2.imshow('Unusual Frame',uFrame)
@@ -85,7 +89,7 @@ def constructMinDistMatrix(megaBlockMotInfVal,codewords, noOfRows, noOfCols, vid
     #threshold = 0.0012675861679
     #threshold = 1.01827939172e-05
     n = 2
-    minDistMatrix = np.zeros((len(megaBlockMotInfVal[0][0]),(noOfRows/n),(noOfCols/n)))
+    minDistMatrix = np.zeros((len(megaBlockMotInfVal[0][0]),(noOfRows//n),(noOfCols//n)))
     for index,val in np.ndenumerate(megaBlockMotInfVal[...,0]):
         eucledianDist = []
         for codeword in codewords[index[0]][index[1]]:
@@ -116,7 +120,7 @@ def test_video(vid):
         calls all methods to test the given video
        
     '''
-    print "Test video ", vid
+    print ("Test video ", vid)
     MotionInfOfFrames, rows, cols = mig.getMotionInfuenceMap(vid)
     #np.save("videos\scene1\rows_cols_set1_p1_test_20-20_k5.npy",np.array([rows,cols]))
     #######print "Motion Inf Map ", len(MotionInfOfFrames)
@@ -124,9 +128,9 @@ def test_video(vid):
     megaBlockMotInfVal = cmb.createMegaBlocks(MotionInfOfFrames, rows, cols)
     ######rows, cols = np.load("rows_cols__set3_p2_test_40_k3.npy")
     #print(megaBlockMotInfVal)
-    np.save("videos\scene1\megaBlockMotInfVal_set1_p1_test_20-20_k5.npy",megaBlockMotInfVal)
+    np.save("Dataset\\videos\\scene1\\megaBlockMotInfVal_set1_p1_test_20-20_k5.npy",megaBlockMotInfVal)
     ######megaBlockMotInfVal = np.load("megaBlockMotInfVal_set3_p2_train_40_k7.npy")
-    codewords = np.load("videos\scene1\codewords_set2_p1_train_20-20_k5.npy")
+    codewords = np.load("Dataset\\videos\\scene1\\codewords_set2_p1_train_20-20_k5.npy")
     print("codewords",codewords)
     listOfUnusualFrames = constructMinDistMatrix(megaBlockMotInfVal,codewords,rows, cols, vid)
     return
@@ -135,7 +139,7 @@ if __name__ == '__main__':
     '''
         defines training set and calls trainFromVideo for every vid
     '''
-    testSet = [r"videos\scene2\2_test1.avi"]
+    testSet = [r"Dataset\\videos\\scene2\\2_test1.avi"]
     for video in testSet:
         test_video(video)
-    print "Done"
+    print ("Done")

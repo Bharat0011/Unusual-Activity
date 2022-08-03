@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import opFlowOfBlocks as roi
 import math
+from scipy.spatial import distance
 
 def getThresholdDistance(mag,blockSize):
     return mag*blockSize
@@ -19,9 +20,9 @@ def getCentreOfBlock(blck1Indx,blck2Indx,centreOfBlocks):
     return (x1,y1),(x2,y2),slope
 
 
-def calcEuclideanDist((x1,y1),(x2,y2)):
-    dist = float(((x2-x1)**2 + (y2-y1)**2)**0.5)
-    return dist
+# def calcEuclideanDist((x1,y1),(x2,y2)):
+#     dist = float(((x2-x1)**2 + (y2-y1)**2)**0.5)
+#     return dist
     
 def angleBtw2Blocks(ang1,ang2):
     if(ang1-ang2 < 0):
@@ -41,7 +42,7 @@ def motionInMapGenerator(opFlowOfBlocks,blockSize,centreOfBlocks,xBlockSize,yBlo
         for ind,val in np.ndenumerate(opFlowOfBlocks[...,0]):
             if(index != ind):
                 (x1,y1),(x2,y2), slope = getCentreOfBlock(index,ind,centreOfBlocks)
-                euclideanDist = calcEuclideanDist((x1,y1),(x2,y2))
+                euclideanDist = distance.euclidean((x1,y1),(x2,y2))
         
                 if(euclideanDist < Td):
                     angWithXAxis = math.atan(slope)
