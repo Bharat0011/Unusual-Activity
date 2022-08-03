@@ -123,7 +123,7 @@ def test_video(vid):
     print ("Test video ", vid)
     MotionInfOfFrames, rows, cols = mig.getMotionInfuenceMap(vid)
     #np.save("videos\scene1\rows_cols_set1_p1_test_20-20_k5.npy",np.array([rows,cols]))
-    #######print "Motion Inf Map ", len(MotionInfOfFrames)
+    ########print "Motion Inf Map ", len(MotionInfOfFrames)
     #numpy.save("MotionInfluenceMaps", np.array(MotionInfOfFrames), allow_pickle=True, fix_imports=True)
     megaBlockMotInfVal = cmb.createMegaBlocks(MotionInfOfFrames, rows, cols)
     ######rows, cols = np.load("rows_cols__set3_p2_test_40_k3.npy")
